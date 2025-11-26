@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVM Voting System</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- Voter Interface (Default) -->
+    <div id="voter-interface" class="interface">
+        <div class="ballot-container">
+            <!-- Header -->
+            <div class="ballot-header">
+                <h2 class="constituency-title">203 - Voter Ballot</h2>
+            </div>
+
+            <!-- Ballot -->
+            <div id="ballot-section" class="ballot-section">
+                <div class="instruction-banner warning">
+                    मतदानाच्या बटणावर फक्त एकदा क्लिक करा!<br>
+                    Click the voting button only once!
+                </div>
+
+                <button class="share-btn" onclick="shareResults()">
+                    <span class="whatsapp-icon">📱</span> SHARE
+                </button>
+
+                <table class="ballot-table">
+                    <thead>
+                        <tr>
+                            <th>क्र.<br>No.</th>
+                            <th>उमेदवाराचे नाव<br>Candidate Name</th>
+                            <th>चिन्ह<br>Symbol</th>
+                            <th>बटण<br>Button</th>
+                        </tr>
+                    </thead>
+                    <tbody id="candidates-list">
+                        <!-- Candidates will be loaded here -->
+                    </tbody>
+                </table>
+
+                <div class="vote-confirmation hidden" id="vote-confirmation">
+                    <div class="confirmation-content">
+                        <h3>✓ Vote Submitted Successfully!</h3>
+                        <p>Thank you for voting!</p>
+                        <button onclick="location.reload()">Return to Ballot</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Interface -->
+    <div id="admin-interface" class="interface hidden">
+        <div class="admin-container">
+            <div class="admin-header">
+                <h2>Admin Dashboard</h2>
+                <button class="back-btn" onclick="location.href='/'">← Exit Admin</button>
+            </div>
+
+            <!-- Tabs -->
+            <div class="admin-tabs">
+                <button class="tab-btn active" onclick="showTab('manage')">Manage Candidates</button>
+                <button class="tab-btn" onclick="showTab('results')">View Results</button>
+            </div>
+
+            <!-- Manage Candidates Tab -->
+            <div id="manage-tab" class="tab-content active">
+                <div class="add-candidate-form">
+                    <h3>Add/Edit Candidate</h3>
+                    <input type="hidden" id="edit-candidate-id">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Candidate Name</label>
+                            <input type="text" id="candidate-name" placeholder="Full name">
+                        </div>
+                        <div class="form-group">
+                            <label>Description/Party</label>
+                            <input type="text" id="candidate-description" placeholder="Party name or description">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Symbol Image URL</label>
+                        <input type="text" id="candidate-image" placeholder="https://example.com/symbol.png">
+                        <small>Or use emoji: 🦁, 🌺, 🏠, ⭐, 🌾, etc.</small>
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn btn-primary" onclick="saveCandidate()">
+                            <span id="save-btn-text">Add Candidate</span>
+                        </button>
+                        <button class="btn btn-secondary" onclick="cancelEdit()">Cancel</button>
+                    </div>
+                </div>
+
+                <div class="candidates-list-admin">
+                    <h3>Current Candidates</h3>
+                    <div id="admin-candidates-list">
+                        <!-- Candidates will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Tab -->
+            <div id="results-tab" class="tab-content">
+                <div class="results-actions">
+                    <button class="btn btn-success" onclick="shareResults()">
+                        📱 Share Results
+                    </button>
+                    <button class="btn btn-primary" onclick="exportToExcel()">
+                        📊 Export to Excel
+                    </button>
+                </div>
+
+                <div class="results-summary">
+                    <h3>Voting Results Summary</h3>
+                    <div id="results-chart">
+                        <!-- Results will be displayed here -->
+                    </div>
+                </div>
+
+                <div class="detailed-votes">
+                    <h3>Detailed Voting Records</h3>
+                    <table class="details-table">
+                        <thead>
+                            <tr>
+                                <th>IP Address</th>
+                                <th>Voted For</th>
+                                <th>Timestamp</th>
+                            </tr>
+                        </thead>
+                        <tbody id="detailed-votes-list">
+                            <!-- Detailed votes will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
